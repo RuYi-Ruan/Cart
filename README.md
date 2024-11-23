@@ -151,7 +151,7 @@ DELIMITER ;
 
 注册界面
 
-<img src="C:/Users/86134/AppData/Roaming/Typora/typora-user-images/image-20241123111739285.png" alt="image-20241123111739285" style="zoom: 25%;" />  
+  ![](https://cdn.jsdelivr.net/gh/RuYi-Ruan/images@main/images/202411231144534.png)
 
 
 
@@ -173,7 +173,7 @@ DELIMITER ;
 
 后台管理首页
 
-<img src="C:/Users/86134/AppData/Roaming/Typora/typora-user-images/image-20241123112156263.png" alt="image-20241123112156263" style="zoom:25%;" />  
+![image-20241123114446514](https://cdn.jsdelivr.net/gh/RuYi-Ruan/images@main/images/202411231144605.png)  
 
 
 

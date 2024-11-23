@@ -1,0 +1,102 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar {
+    background-color: #343a40;
+    height: 100vh;
+    padding-top: 20px;
+}
+
+.sidebar a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 15px;
+    display: block;
+}
+
+.sidebar a:hover {
+    background-color: #495057;
+}
+
+.sidebar .menu-title {
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.content {
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.menu-icon {
+    margin-right: 10px;
+}
+
+.card {
+    max-width: 600px;
+    /* 增大卡片宽度 */
+    margin: auto;
+    border: none;
+    background-color: #f8f9fa;
+}
+
+.card-img {
+    width: 120px;
+    /* 增大头像 */
+    height: 120px;
+    object-fit: cover;
+    border: 3px solid #dee2e6;
+    /* 为头像添加边框 */
+}
+
+.text-start {
+    flex: 1;
+}
+
+.d-flex {
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.card-title {
+    font-size: 1.8rem;
+    /* 增大用户名字号 */
+}
+
+.card-text {
+    font-size: 1.2rem;
+    /* 增大工号信息字号 */
+}
+
+#deleteToast .toast-header {
+    background-color: #f8f9fa;
+}
+
+
+.btn-success {
+    background-color: #198754 !important;
+    border-color: #198754 !important;
+}
+
+.offcanvas-title {
+    font-size: 1.5rem; /* Increase the font size */
+    font-weight: bold; /* Make the text bold */
+    color: #333; /* Optional: Change the color for better visibility */
+}
+#home-card {
+    transform: scale(0.8); /* 等比例缩放 */
+    transform-origin: center; /* 缩放中心设置为卡片的中心 */
+}
+
+/* 鼠标悬停时头像放大动画 */
+.avatar {
+    transition: transform 0.3s ease; /* 添加过渡效果 */
+}
+
+.avatar:hover {
+    transform: scale(1.2); /* 鼠标悬停时放大 1.5 倍 */
+}

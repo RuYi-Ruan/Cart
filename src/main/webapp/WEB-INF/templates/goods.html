@@ -1,0 +1,18 @@
+<!-- goods.html -->
+<div class="row" th:fragment="goodsListFragment">
+  <div class="col-md-4" th:each="goods : ${session.hasGoods}">
+    <div class="card" style="width: 100%;">
+      <img th:src="${goods.getImgUrl()}" class="card-img-top" alt="商品">
+      <div class="card-body">
+        <h5 class="card-title" th:text="${goods.getGoodsName()}"></h5>
+        <p class="card-text" th:text="'售价：' + ${goods.getSalePrice()} + '元'"></p>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cartModal"
+                th:attr="data-id=${goods.getGoodsNo()},
+                                    data-name=${goods.getGoodsName()},
+                                    data-salePrice=${goods.getSalePrice()}">
+          加入购物车
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

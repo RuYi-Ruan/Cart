@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.cart.mapper.UserMapper">
+
+    <select id="getUserByCardNo" parameterType="String" resultType="User">
+        select u.card_no, u.username, u.sex, u.age, u.password
+        from tb_user u
+        where u.card_no=#{card_no};
+    </select>
+
+    <insert id="insertUser" parameterType="User">
+        insert into tb_user
+        (card_no, username, sex, age, password)
+        values (#{cardNo}, #{username}, #{sex}, #{age}, #{password});
+    </insert>
+
+    <select id="selectUsers" resultType="User">
+        select * from tb_user;
+    </select>
+
+    <delete id="deleteUserByCardNo">
+        delete from tb_user
+        where card_no=#{card_no};
+    </delete>
+
+    <update id="updateUserByCardNo" parameterType="User">
+        update tb_user set
+           username = #{user.username},
+           sex=#{user.sex},
+           age=#{user.age},
+           password=#{user.password}
+        where card_no=#{user.cardNo}
+    </update>
+
+    <select id="selectUsersByKeyword" parameterType="String" resultType="User">
+        select * from tb_user
+        where username like CONCAT('%', #{keyword}, '%');
+    </select>
+</mapper>

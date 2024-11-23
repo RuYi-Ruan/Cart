@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>购物车</title>
+
+    <!-- 引入 Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/assets/css/cart.css}" rel="stylesheet">
+</head>
+<body>
+
+<div class="bg-img"></div> <!-- 背景图片 -->
+
+<div class="container mt-5">
+    <!-- 标题 -->
+    <h2 class="cart-header">购物车</h2>
+
+    <!-- 账单信息表格 -->
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>商品编号</th>
+            <th>商品名称</th>
+            <th>数量</th>
+            <th>单价 (元)</th>
+            <th>总价 (元)</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- 遍历会话中的 bills 列表 -->
+        <tr th:each="bill,iterStat : ${session.bills}">
+            <td th:text="${iterStat.index + 1}"></td>
+            <td th:text="${bill.key}"></td>
+            <td th:text="${bill.value.getGoodsName()}"></td>
+            <td th:text="${bill.value.getQuantity()}"></td>
+            <td th:text="${bill.value.getSalePrice()}"></td>
+            <td th:text="${bill.value.getTotalPrice()}"></td>
+            <td>
+                <button class="btn btn-danger btn-sm delete-button" th:data-goods-id="${bill.key}">
+                    删除
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- 按钮组 -->
+    <div class="btn-group">
+        <!-- 继续购物按钮，跳转到继续购物的 servlet -->
+        <a href="UserHome" class="btn btn-success">继续购物</a>
+
+        <!-- 结算按钮，跳转到结算的 servlet -->
+        <a href="SettleBill" class="btn btn-primary">结算</a>
+    </div>
+</div>
+
+<!-- Toast 提示框 -->
+<div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 9999;">
+    <div id="toast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">提示</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" id="toast-message"></div>
+    </div>
+</div>
+
+<!-- 引入 Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+
+    // 初始绑定删除按钮点击事件
+    document.addEventListener('DOMContentLoaded', function () {
+        bindDeleteButtons();
+    });
+
+    // 绑定删除按钮点击事件函数
+    function bindDeleteButtons() {
+        document.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', function () {
+                const goodsId = this.getAttribute('data-goods-id');
+                deleteCartItem(goodsId);
+            });
+        });
+    }
+
+    // 删除购物车条目
+    function deleteCartItem(goodsId) {
+        fetch('deleteCartBill?goodsId=' + goodsId, {
+            method: 'delete',
+        })
+            .then(response => response.json())
+            .then(data => {
+                const toastMessage = document.getElementById('toast-message');
+                const toastElement = new bootstrap.Toast(document.getElementById('toast'));
+
+                if (data.ok) {
+                    // 更新表格内容
+                    updateTable(data.bills);
+                } else {
+                    toastMessage.textContent = '删除失败！';
+                    toastElement.show();
+                }
+            })
+            .catch(error => {
+                console.error('删除请求失败:', error);
+                const toastMessage = document.getElementById('toast-message');
+                const toastElement = new bootstrap.Toast(document.getElementById('toast'));
+                toastMessage.textContent = '请求失败，请稍后再试！';
+                toastElement.show();
+            });
+    }
+
+    // 动态更新表格内容
+    function updateTable(bills) {
+        if (!bills) return; // 检查 bills 是否为 undefined
+
+        const tbody = document.querySelector('table tbody');
+        tbody.innerHTML = ''; // 清空表格内容
+
+        // 使用新的 bills 数据重建表格内容
+        bills.forEach((bill, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${bill.key}</td>
+                <td>${bill.goodsName}</td>
+                <td>${bill.quantity}</td>
+                <td>${bill.salePrice}</td>
+                <td>${bill.totalPrice}</td>
+                <td>
+                    <button class="btn btn-danger btn-sm delete-button" data-goods-id="${bill.key}">
+                        删除
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        // 重新绑定删除按钮的点击事件
+        bindDeleteButtons();
+    }
+</script>
+</body>
+</html>

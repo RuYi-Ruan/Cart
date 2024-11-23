@@ -1,0 +1,87 @@
+/* 设置背景图片 */
+.bg-img {
+    background-image: url("http://localhost:8080/cart/assets/images/cartBackground.jpg");
+    background-size: cover;
+    background-position: center;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1; /* 使背景图片不挡住内容 */
+}
+
+/* 重置 body 的 margin */
+body {
+    margin: 0;
+    height: 100%;
+}
+
+.container {
+    max-width: 800px;
+    z-index: 1; /* 使内容位于背景之上 */
+    position: relative;
+}
+
+.cart-header {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.8rem; /* 增加标题字体大小 */
+    margin-bottom: 20px;
+    color: #333; /* 深色字体 */
+}
+
+/* 增加表格字体的显眼度 */
+.table {
+    font-size: 1.1rem; /* 增大字体 */
+    color: #333; /* 设置字体颜色 */
+}
+
+.table thead th {
+    text-align: center;
+    font-size: 1.2rem; /* 增大表头字体 */
+    font-weight: bold;
+    color: #fff; /* 设置表头字体颜色 */
+    background-color: #343a40; /* 深色表头背景 */
+}
+
+.table tbody td {
+    vertical-align: middle;
+    text-align: center;
+    font-size: 1.1rem; /* 增大表格内容字体 */
+}
+
+.btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* 设置按钮间距 */
+    margin-top: 20px;
+}
+
+.btn-secondary {
+    background-color: #2e8b57; /* 深绿色 */
+    border-color: #2e8b57;
+    color: white;
+}
+
+.btn-primary {
+    background-color: #1e5f8b; /* 深蓝色 */
+    border-color: #1e5f8b;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #3cb371; /* 亮绿色 */
+    border-color: #3cb371;
+}
+
+.btn-primary:hover {
+    opacity: 0.85;
+}
+
+.btn-success:focus,
+.btn-primary:focus {
+    background-color: inherit; /* 保持原始颜色 */
+    color: white;
+    box-shadow: none; /* 取消默认点击效果 */
+}

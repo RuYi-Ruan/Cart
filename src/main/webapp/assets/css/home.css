@@ -1,0 +1,216 @@
+
+/* 全局样式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 顶部导航样式 */
+.top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e0e0e0;
+    background-color: #ffffff;
+    padding: 0 15px;
+}
+
+.top img.logo {
+    width: 180px;
+}
+
+/* 导航栏链接和头像样式 */
+.top-nav {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.top-nav .nav-link {
+    color: #333;
+    font-size: 16px;
+}
+
+.top-nav .nav-link:hover {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+/* 用户头像样式 */
+.top .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.top .avatar:hover {
+    transform: scale(1.5);
+}
+
+/* 页面主体内容样式 */
+.center {
+    padding-bottom: 20px;
+    background-color: #f8f9fa;
+    margin-bottom: 20px;
+}
+
+/* 轮播图样式 */
+.carousel-container {
+    width: 94%;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-left: 50px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.carousel-inner img {
+    height: 400px;
+    object-fit: cover;
+    width: 100%;
+}
+
+/* 精品推荐标题样式 */
+.goods .title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* 商品卡片样式 */
+.goods .card {
+    height: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: none;
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.goods .card:hover {
+    transform: translateY(-5px);
+}
+
+.goods .card-img-top {
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.goods .card-body {
+    padding: 15px;
+    text-align: center;
+}
+
+.goods .card-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.goods .card-text {
+    font-size: 16px;
+    color: #666;
+}
+
+.goods .btn-primary {
+    background-color: #007bff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: auto;
+}
+
+.goods .btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.goods .col-md-4 {
+    margin-bottom: 20px; /* 根据需要调整间距 */
+}
+
+/* 分页器样式 */
+.pagination .page-item.active .page-link {
+    background-color: pink;
+    color: #fff;
+}
+
+/* 底部样式 */
+.bottom {
+    height: 60px;
+    background-color: #ffffff;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #666;
+}
+
+/*气泡提示框样式*/
+/* Popover 样式 */
+.popover {
+    max-width: 250px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.popover .popover-body {
+    padding: 10px 15px;
+    text-align: left;
+}
+
+/* 标题样式 */
+.popover .popover-header {
+    font-weight: bold;
+    background-color: #007bff;
+    color: #fff;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+/* 用户信息文字样式 */
+.popover-body p {
+    color: #333;
+    font-size: 14px;
+    margin: 0;
+    padding: 5px 0;
+    display: flex; /* 使用 flex 布局 */
+    align-items: center; /* 图标和文字垂直居中 */
+}
+
+.popover-body p i {
+    font-size: 16px; /* 图标大小 */
+    margin-right: 8px; /* 图标与文字的间距 */
+    color: #666; /* 图标颜色 */
+}
+
+/* 安全退出链接样式 */
+.popover-body a {
+    display: flex; /* 使用 flex 布局 */
+    align-items: center; /* 图标和文字垂直居中 */
+    color: #333; /* 链接颜色，与其他文字一致 */
+    font-size: 14px;
+    text-decoration: none; /* 去除下划线 */
+    margin-top: 10px; /* 与上方内容保持间距 */
+    padding: 5px 0;
+}
+
+.popover-body a i {
+    font-size: 16px; /* 图标大小 */
+    margin-right: 8px; /* 图标与文字的间距 */
+    color: #666; /* 图标颜色 */
+}
+
+.popover-body a:hover {
+    color: #000; /* 鼠标悬停时颜色 */
+    text-decoration: none; /* 鼠标悬停仍无下划线 */
+}
+
+

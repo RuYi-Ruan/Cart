@@ -1,0 +1,56 @@
+/* 背景图片的样式 */
+.bg-img {
+    width: 100vw;
+    height: 100vh;
+    background: url("http://localhost:8080/cart/assets/images/login_background.jpg") no-repeat center center fixed;
+    background-size: cover;  /* 背景图片填充整个屏幕 */
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;  /* 使表单居中 */
+}
+
+/* 设置登录表单的外部容器样式 */
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 30px;
+    background-color: rgba(198, 213, 232, 0.6); /* 半透明背景 */
+    border-radius: 12px; /* 圆角矩形边框 */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 添加更柔和的阴影效果 */
+}
+
+/* 设置表单标题 */
+.login-container h3 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* 设置输入框样式 */
+.login-container input {
+    margin-bottom: 15px;
+    border-radius: 8px; /* 输入框圆角 */
+    padding: 10px;
+}
+
+/* 设置登录按钮 */
+.login-container button {
+    padding: 10px;
+    font-size: 1.1rem;
+    border-radius: 8px; /* 按钮圆角 */
+}
+
+/* 设置注册链接 */
+.login-container .text-center small a {
+    color: #007bff;
+}
+
+/* 小屏设备下调整输入框大小 */
+@media (max-width: 576px) {
+    .login-container {
+        width: 90%;
+        padding: 20px;
+    }
+}

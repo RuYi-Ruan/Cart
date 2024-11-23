@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.cart.mapper.SaleBillMapper">
+    <insert id="insertSaleBill">
+        insert into salebill
+        (goods_no, card_no, number, total_price)
+        values
+        <foreach collection="saleBillList" item="saleBill" separator=",">
+            (#{saleBill.goodsNo}, #{saleBill.cardNo}, #{saleBill.number}, #{saleBill.totalPrice})
+        </foreach>
+    </insert>
+
+    <select id="getAllSaleBill" resultType="SaleBill">
+        select * from salebill;
+    </select>
+
+    <delete id="deleteSaleBillById">
+        delete from salebill
+        where goods_no=#{saleBillId};
+    </delete>
+
+    <update id="updateSaleBillById" parameterType="SaleBill">
+        update salebill set
+            number=#{salebill.number},
+            total_price=#{salebill.totalPrice},
+            bill_date=#{salebill.billDate}
+        where goods_no=#{salebill.goodsNo} and card_no=#{salebill.cardNo};
+    </update>
+
+    <insert id="insertNewSaleBill" parameterType="saleBill">
+        insert into salebill
+            (goods_no, card_no, number, total_price, bill_date)
+            values (#{salebill.goodsNo}, #{salebill.cardNo},
+                #{salebill.number}, #{salebill.totalPrice}, #{salebill.billDate});
+    </insert>
+
+    <select id="getSaleBillByKeyword" parameterType="String" resultType="SaleBill">
+        select * from salebill
+        where goods_no like CONCAT('%', #{keyword}, '%');
+    </select>
+</mapper>

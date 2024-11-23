@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.cart.mapper.GoodsMapper">
+    <select id="selectAllGoods" resultType="Goods">
+        select * from tb_goods;
+    </select>
+
+    <select id="getTotalGoodsCount" resultType="int">
+        select count(*) from tb_goods;
+    </select>
+
+    <select id="getPageGoods" resultType="Goods">
+        select * from tb_goods limit 6 offset #{offset};
+    </select>
+
+    <delete id="deleteGoodsById">
+        delete from tb_goods
+        where goods_no = #{goods_no};
+    </delete>
+
+    <update id="updateGoodsById" parameterType="Goods">
+        update tb_goods set
+            goods_name = #{goods.goodsName},
+            in_price = #{goods.inPrice},
+            sale_price = #{goods.salePrice},
+            number = #{goods.number},
+            img_url = #{goods.imgUrl}
+        where goods_no = #{goods.goodsNo};
+    </update>
+
+    <insert id="insertGoods" parameterType="Goods">
+        insert into tb_goods
+            (goods_no, goods_name, in_price, sale_price,number, img_url)
+            values (#{goods.goodsNo}, #{goods.goodsName}, #{goods.inPrice},
+                    #{goods.salePrice}, #{goods.number}, #{goods.imgUrl});
+    </insert>
+
+    <select id="selectGoodsByKeyword" resultType="Goods" parameterType="String">
+        select * from tb_goods
+        where goods_name like CONCAT('%', #{keyword}, '%');
+    </select>
+</mapper>

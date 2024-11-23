@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>管理页面</title>
+  <!-- 引入bootstrap.css 及其图标库 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- 引入 layui.css -->
+  <link href="//unpkg.com/layui@2.9.18/dist/css/layui.css" rel="stylesheet">
+  <link th:href="@{/assets/css/admin.css}" rel="stylesheet">
+</head>
+
+<body>
+<div class="container-fluid">
+  <div class="row">
+    <!-- 左侧菜单 -->
+    <nav class="col-md-3 col-lg-2 sidebar d-flex flex-column">
+      <div class="menu-title d-flex align-items-center">
+        <i class="bi bi-shop-window menu-icon" style="font-size: 1.8rem;"></i>
+        优乐购后台管理
+      </div>
+      <a href="#" id="home" class="d-flex align-items-center">
+        <i class="bi bi-house menu-icon"></i>
+        用户首页
+      </a>
+      <a href="#" id="user-info" class="d-flex align-items-center">
+        <i class="bi bi-person-circle menu-icon"></i>
+        用户信息
+      </a>
+      <a href="#" id="product-info" class="d-flex align-items-center">
+        <i class="bi bi-box-seam menu-icon"></i>
+        商品信息
+      </a>
+      <a href="#" id="bill-info" class="d-flex align-items-center">
+        <i class="bi bi-receipt menu-icon"></i>
+        账单信息
+      </a>
+    </nav>
+
+    <!-- 右侧信息展示区域 -->
+    <main class="col-md-9 col-lg-10 content" id="content-area">
+      <!-- 首页卡片 -->
+      <div id="home-card" class="card text-center p-5  mx-auto"
+           style="background-color: #f8f9fa; width: 90%; max-width: 800px; padding: 20px;">
+        <div class="d-flex align-items-center">
+          <img th:src="@{/assets/images/avatar.gif}"
+               class="card-img rounded-circle me-4 avatar"
+               alt="用户头像" style="width: 240px; height: 240px; border: 3px solid #343a40;"
+               id="user-avatar" data-bs-toggle="popover" data-bs-trigger="manual"
+               data-bs-placement="bottom" data-bs-html="true"
+               data-bs-content='<button class="btn btn-danger" onclick="logout()">退出登录</button>'>
+
+          <div class="text-start ms-5">
+            <h1 class="card-title mb-2 fw-bold" th:text="${session.username}">用户姓名</h1>
+            <p class="card-text mb-4 text-muted" th:text="'工号：' + ${session.userAccount}">账号信息</p>
+            <p class="card-text">
+              <i class="bi bi-calendar-event me-2"></i>最后登录：2024-11-16
+            </p>
+          </div>
+        </div>
+        <hr>
+        <div class="d-flex justify-content-around mt-5">
+          <div class="text-center">
+            <i class="bi bi-graph-up-arrow fs-2" style="color: #198754;"></i>
+            <p class="mb-0 mt-2 fs-4">今日销量</p>
+            <p class="fw-bold fs-2 text-primary">123</p>
+          </div>
+          <div class="text-center">
+            <i class="bi bi-box-seam fs-2" style="color: #ffc107;"></i>
+            <p class="mb-0 mt-2 fs-4">总库存</p>
+            <p class="fw-bold fs-2 text-primary">456</p>
+          </div>
+          <div class="text-center">
+            <i class="bi bi-people fs-2" style="color: #0d6efd;"></i>
+            <p class="mb-0 mt-2 fs-4">注册用户</p>
+            <p class="fw-bold fs-2 text-primary">666</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 操作区域 -->
+      <div id="operate-area" class="d-flex justify-content-between align-items-center mb-3 d-none">
+        <button class="btn btn-success" id="add-record-button">
+          <i class="bi bi-plus me-1"></i>添加记录
+        </button>
+        <div class="input-group" style="width: 300px;">
+          <button class="btn btn-secondary" type="button" id="reset-button">
+            <i class="bi bi-arrow-counterclockwise"></i>
+          </button>
+          <input type="text" class="form-control" placeholder="搜索..." id="search-input" aria-label="搜索">
+          <button class="btn btn-primary" type="button" id="search-button">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 用户信息表格 -->
+      <table id="user-table" class="table table-striped d-none">
+        <thead>
+        <tr>
+          <th>卡号</th>
+          <th>用户名</th>
+          <th>性别</th>
+          <th>年龄</th>
+          <th>密码</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <!-- 商品信息表格 -->
+      <table id="goods-table" class="table table-striped d-none">
+        <thead>
+        <tr>
+          <th>商品编号</th>
+          <th>商品名称</th>
+          <th>进价</th>
+          <th>售价</th>
+          <th>库存数量</th>
+          <th>图片</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <!-- 账单信息表格 -->
+      <table id="salebill-table" class="table table-striped d-none">
+        <thead>
+        <tr>
+          <th>商品编号</th>
+          <th>用户卡号</th>
+          <th>数量</th>
+          <th>总价</th>
+          <th>账单日期</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <!-- 分页器导航 -->
+      <nav id="pagination-nav" aria-label="Page navigation example" class="d-none">
+        <ul class="pagination justify-content-end">
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- 吐司消息 -->
+      <div aria-live="polite" aria-atomic="true" class="position-fixed top-0 start-50 translate-middle-x p-3"
+           style="z-index: 11;">
+        <div id="deleteToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
+             data-bs-delay="3000">
+          <div class="toast-header">
+            <strong class="me-auto" id="toast-title"></strong>
+            <small class="text-muted">刚刚</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body" id="toast-body"></div>
+        </div>
+      </div>
+    </main>
+
+    <!-- 滑动导航 -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasForm" aria-labelledby="offcanvasFormLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasFormLabel">标题</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <form id="offcanvas-form">
+          <!-- 动态生成的表单内容将插入到这里 -->
+        </form>
+        <div class="d-flex justify-content-end">
+          <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="offcanvas">取消</button>
+          <button type="button" class="btn btn-primary" id="submitFormButton">确认</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- 引入 bootstrap.js -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- 引入 layui.js -->
+<script src="//unpkg.com/layui@2.9.18/dist/layui.js"></script>
+<script>
+  // 全局定义 showToast 函数
+  function showToast(title, message, success) {
+    const toastTitle = document.getElementById("toast-title");
+    const toastBody = document.getElementById("toast-body");
+
+    toastTitle.textContent = title;
+    toastBody.textContent = message;
+
+    // 根据成功或失败设置不同的颜色
+    toastTitle.style.color = success ? "green" : "red";
+
+    const toastElement = new bootstrap.Toast(document.getElementById("deleteToast"));
+    toastElement.show();
+  }
+
+  // 首页显示逻辑
+  function showHome() {
+    document.getElementById('home-card').classList.remove('d-none');
+    document.getElementById('operate-area').classList.add('d-none');
+    document.getElementById('user-table').classList.add('d-none');
+    document.getElementById('goods-table').classList.add('d-none');
+    document.getElementById('salebill-table').classList.add('d-none');
+    document.getElementById('pagination-nav').classList.add('d-none');
+  }
+
+  // 分页函数
+  function updatePagination(totalItems, currentPage, pageSize, loadDataCallback) {
+    const totalPages = Math.ceil(totalItems / pageSize);
+    const pagination = document.querySelector(".pagination");
+
+    pagination.innerHTML = ""; // 清空现有分页器
+
+    // Previous Button
+    const prevPage = document.createElement("li");
+    prevPage.className = "page-item" + (currentPage === 1 ? " disabled" : "");
+    prevPage.innerHTML = `<a class="page-link" href="#">&laquo;</a>`;
+    prevPage.addEventListener("click", () => {
+      if (currentPage > 1) {
+        loadDataCallback(currentPage - 1);
+      }
+    });
+    pagination.appendChild(prevPage);
+
+    // Page Numbers
+    for (let i = 1; i <= totalPages; i++) {
+      const pageItem = document.createElement("li");
+      pageItem.className = "page-item" + (i === currentPage ? " active" : "");
+      pageItem.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+      pageItem.addEventListener("click", () => {
+        loadDataCallback(i);
+      });
+      pagination.appendChild(pageItem);
+    }
+
+    // Next Button
+    const nextPage = document.createElement("li");
+    nextPage.className = "page-item" + (currentPage === totalPages ? " disabled" : "");
+    nextPage.innerHTML = `<a class="page-link" href="#">&raquo;</a>`;
+    nextPage.addEventListener("click", () => {
+      if (currentPage < totalPages) {
+        loadDataCallback(currentPage + 1);
+      }
+    });
+    pagination.appendChild(nextPage);
+  }
+
+  // 初始化 Popover
+  function initPopover() {
+    const popovers = document.querySelectorAll('[data-bs-toggle="popover"]');
+    popovers.forEach((popover) => {
+      new bootstrap.Popover(popover, {
+        html: true,
+        sanitize: false // 允许 HTML 以便包含按钮
+      });
+    });
+  }
+
+  // 移除按钮绑定的监听时间
+  const _removeEventListeners = (tableId) => {
+    // 移除所有已注册的事件监听器
+    const editButtons = document.querySelectorAll(`#${tableId} .edit-btn`);
+    const deleteButtons = document.querySelectorAll(`#${tableId} .delete-btn`);
+    const addRecordButton = document.getElementById("add-record-button");
+
+    editButtons.forEach(button => {
+      button.replaceWith(button.cloneNode(true)); // 重新创建按钮以移除事件
+    });
+    deleteButtons.forEach(button => {
+      button.replaceWith(button.cloneNode(true)); // 重新创建按钮以移除事件
+    });
+    if (addRecordButton) {
+      addRecordButton.replaceWith(addRecordButton.cloneNode(true)); // 重新创建按钮以移除事件
+    }
+
+    // 移除搜索按钮的事件监听器
+    const searchButton = document.getElementById("search-button");
+    if (searchButton) {
+      searchButton.replaceWith(searchButton.cloneNode(true)); // 重新创建按钮以移除事件
+    }
+
+    // 移除重置按钮的事件监听器
+    const resetButton = document.getElementById("reset-button");
+    if (resetButton) {
+      resetButton.replaceWith(resetButton.cloneNode(true)); // 重新创建按钮以移除事件
+    }
+  }
+
+  // 更新后的搜索和重置按钮点击事件处理函数
+  function _searchButtonClickHandler(event, model) {
+    event.preventDefault(); // 阻止默认表单提交
+
+    const searchInput = document.getElementById("search-button").previousElementSibling.value.trim();
+    model.keyword = searchInput;
+    model.loadData();
+  }
+
+  function _resetButtonClickHandler(event, model) {
+    event.preventDefault(); // 阻止默认表单提交
+
+    const searchInput = document.querySelector("#operate-area input[type='text']");
+    if (searchInput) {
+      searchInput.value = ""; // 清空搜索框
+      model.keyword = null; // 重置关键词
+      model.loadData(); // 重新加载所有数据
+    } else {
+      console.error("搜索框未找到，无法重置");
+    }
+  }
+
+  // 点击事件
+  document.getElementById("home").addEventListener("click", showHome);
+
+  // 页面加载时初始化为首页
+  document.addEventListener("DOMContentLoaded", () => {
+    showHome();
+  });
+
+  // 页面加载时初始化头像的提示框
+  document.addEventListener("DOMContentLoaded", () => {
+    const avatar = document.getElementById('user-avatar');
+    const avatarPopover = new bootstrap.Popover(avatar, {
+      html: true,
+      sanitize: false,
+      trigger: 'manual', // Manually control when the popover shows/hides
+    });
+
+    // Track whether the popover is currently shown
+    let popoverVisible = false;
+
+    // Toggle the popover on avatar click
+    avatar.addEventListener('click', () => {
+      if (popoverVisible) {
+        avatarPopover.hide();
+      } else {
+        avatarPopover.show();
+      }
+      popoverVisible = !popoverVisible; // Toggle state
+    });
+  });
+
+
+
+  // 退出登录功能
+  function logout() {
+    // 可以通过跳转到退出登录的servlet：
+    window.location.href = 'LogoutServlet';
+  }
+
+</script>
+<!-- 引入各个模块的js文件 -->
+<script th:src="@{/assets/js/admin/userModule.js}"></script>
+<script th:src="@{/assets/js/admin/goodsModule.js}"></script>
+<script th:src="@{/assets/js/admin/saleBillModule.js}"></script>
+</body>
+
+</html>

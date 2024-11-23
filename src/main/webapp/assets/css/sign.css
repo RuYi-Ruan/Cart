@@ -1,0 +1,20 @@
+.register-container {
+    width: 100%;
+    max-width: 700px;
+    padding: 30px;
+    background-color: rgba(198, 213, 232, 0.6); /* 半透明背景 */
+    border-radius: 12px; /* 圆角矩形边框 */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 添加更柔和的阴影效果 */
+}
+
+/* 背景图片的样式 */
+.bg-img {
+    width: 100vw;
+    height: 100vh;
+    background: url("http://localhost:8080/cart/assets/images/sign_background.jpg") no-repeat center center fixed;
+    background-size: cover;  /* 背景图片填充整个屏幕 */
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;  /* 使表单居中 */
+}

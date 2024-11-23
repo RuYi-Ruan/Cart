@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <!-- 引入 Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 引入图标库 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link th:href="@{/assets/css/home.css}" rel="stylesheet">
+</head>
+<body>
+<!-- 顶部导航栏 -->
+<div class="top">
+    <img th:src="@{/assets/images/logo.png}" class="logo" alt="Logo">
+    <div class="top-nav">
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">首页</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">关于</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">消息</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" id="cartLink">我的购物车</a>
+            </li>
+        </ul>
+        <img th:src="@{/assets/images/avatar.gif}" id="avatarPopover" class="avatar" alt="用户头像" data-bs-toggle="popover" data-bs-trigger="manual">
+
+    </div>
+</div>
+
+<!-- 鼠标经过头像弹出气泡提示框 -->
+<div id="userPopoverContent" style="display: none;">
+    <div class="popover-header">个人信息</div>
+    <div class="popover-body">
+        <p class="d-flex align-items-center mb-2">
+            <i class="bi bi-person-circle me-2"></i>
+            用户名：<span th:text="${session.username}">张三</span>
+        </p>
+        <p class="d-flex align-items-center mb-3">
+            <i class="bi bi-credit-card-2-front me-2"></i>
+            账户：<span th:text="${session.userAccount}">S20240066</span>
+        </p>
+        <a href="LogoutServlet" class="btn btn-link text-danger d-flex align-items-center">
+            <i class="bi bi-power me-2"></i>
+            <span th:text="安全退出"></span>
+        </a>
+    </div>
+</div>
+
+<!-- 页面主体内容区域 -->
+<div class="center">
+    <!-- 轮播图区域 -->
+    <div class="carousel-container">
+        <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div th:each="i : ${#numbers.sequence(1, 5)}"
+                     th:classappend="${i == 1} ? 'active' : ''"
+                     class="carousel-item">
+                    <img th:src="@{'/assets/images/carousel_pc_' + ${i} + '.jpg'}"
+                         class="d-block w-100"
+                         alt="carousel image">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 商品展示区 -->
+    <div class="goods">
+        <p class="title">精品推荐</p>
+        <div class="container" id="goodsContainer">
+            <div th:replace="goods :: goodsListFragment"></div>
+        </div>
+    </div>
+</div>
+
+<!-- 分页器组件 -->
+<nav aria-label="Page navigation example" style="margin-right: 50px">
+    <ul class="pagination justify-content-end" th:data-total-pages="${session.totalPages}">
+        <!-- Previous 按钮 -->
+        <li class="page-item" th:classappend="${session.currentPage == 1} ? 'disabled' : ''">
+            <a class="page-link" href="javascript:void(0);"  th:aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+
+        <!-- 动态生成页码按钮 -->
+        <li class="page-item" th:each="i : ${#numbers.sequence(1, session.totalPages)}"
+            th:classappend="${i == session.currentPage} ? 'active' : ''">
+            <a class="page-link pagination-link" href="javascript:void(0);" th:data-page="${i}" th:text="${i}"></a>
+        </li>
+
+        <!-- Next 按钮 -->
+        <li class="page-item" th:classappend="${session.currentPage == session.totalPages} ? 'disabled' : ''">
+            <a class="page-link" href="javascript:void(0);"  th:aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+
+<!-- 底部栏 -->
+<div class="bottom">
+    <p>版权所有 &copy; 2024</p>
+</div>
+
+<!-- 模态框 -->
+<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cartModalLabel">选择商品数量</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label for="quantityInput" class="form-label">数量</label>
+                <input type="number" id="quantityInput" class="form-control" min="1" value="1">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="confirmButton">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 引入 Bootstrap JS 和自定义 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/assets/js/home.js}"></script>
+
+</body>
+</html>
